@@ -11,12 +11,12 @@ library(DT)
 bcl <- read_csv("bcl-data.csv")
 
 
-# Feature 3: Better UI through top page navigation for different app aspects
+# Key Feature 1: Better UI through top page navigation for different app aspects
 ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
 
                 tabPanel("Plots",
 
-                         # Adding Feature 1: Displaying an image of BC Liquor Store to increase app's visual appeal for enhanced user experience
+
                          titlePanel(title = "Data Exploration: Visual"),
                          h4("Let's conduct basic EDA on the BC liquor store dataset!"),
                          h4("Data filters:"),
@@ -26,7 +26,7 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
                              sliderInput("priceInput", "Price", 0, 100,
                                          value = c(25, 40), pre = "$"),
 
-                             # Amended radio buttons to multi-input check box
+                             # Feature : Amended radio buttons to multi-input check box
                              checkboxGroupInput(inputId = "typeInput",
                                                 label = "Choose Drink Type(s):",
                                                 choices = c("BEER", "REFRESHMENT", "SPIRITS", "WINE"),
@@ -37,7 +37,7 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
                            ),
 
                            mainPanel(
-                             # Adding Feature 2: Including a 'tab' layout to plot another histogram allowing for comparison between different data attributes
+                             # Adding Key Feature 3: Including a 'tab' layout to plot another histogram allowing for comparison between different data attributes
                              tabsetPanel(
                                tabPanel("Frequency Distribution of Alcohol Content", plotOutput("alcohol_hist")),
                                tabPanel("Frequency Distribution of Sweetness", plotOutput("sweetness_hist")))
@@ -49,17 +49,13 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
                          h4("Table delineates filtered information per user selections"),
                          h4("Table is interactive for further sorting and filtering"),
 
-                         sidebarLayout(
-                           sidebarPanel(
-                             img(src="pic.png", height="200px", width="250px", alt="error with image", deleteFile=FALSE)
-                           ),
 
                            mainPanel(
                              # Using package DT, rendering table output
                              DT::dataTableOutput("data_table")
                            )
 
-                         )),
+                         ),
 
                 tabPanel("Data",
                          # Including the data download button
@@ -75,13 +71,11 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
 
 server <- function(input, output) {
 
-  # Making the dataset reactive to user inputs i.e. filters
-  filtered_data <-
-    reactive({
-      bcl %>% filter(Price > input$priceInput[1] &
+  # Feature : Making the dataset reactive to user inputs i.e. filters
+  filtered_data <- reactive({ bcl %>% filter(Price > input$priceInput[1] &
                        Price < input$priceInput[2] &
                        Type == input$typeInput)
-    })
+     })
 
 
   # Displaying histogram for 'alcohol_content' attribute
@@ -106,7 +100,7 @@ server <- function(input, output) {
     })
 
 
-  # Feature 4(in progress): Computing the result for total item selections present in dataset for the combined user filters
+  # Key Feature 2: Computing the result for total item selections present in dataset for the combined user filters
   output$filteredResult<-
     renderText({
       tempCount <- nrow(filtered_data())
@@ -116,6 +110,11 @@ server <- function(input, output) {
       paste("No of products found per above selection ", tempCount)
     })
 
+  # Adding Feature 4: changing data rendering for table to enable interactivity(Exploring options for Assignment 4)
+  output$data_table <-
+    DT::renderDataTable({
+      filtered_data()
+    })
 }
 
 # Run the application
