@@ -1,4 +1,4 @@
-This assignment focuses on working with "Shiny" applications. 
+**Interested in Data Exploration and analysis of BC Liqor Dataset? Check out me app [here](https://shreyaverma.shinyapps.io/DataAnalysis_BCL/)**
 
 ### Description
 This app provides basic data exploration and analysis for the BC Liquor dataset. The user can filter the dataset using custom selection on price range and drink type(s). The app also displays the filtered dataset. To enhance the value provided to the user the app increases data exploration functionality and user experience through the addition of functional and UI features.
@@ -15,8 +15,7 @@ Some of the Key Features added:
 **Bonus: Multiple-input box over radio buttons!**
 
 ### App Access
-The apps are being hosted on the 'shinyapp.io' webpage and can be accessed per below: 
-Assignment B3: [version 0.1.0](https://shreyaverma.shinyapps.io/DataAnalysis_BCL/) 
+The apps are being hosted on the 'shinyapp.io' webpage.
 
 ### Acknowledgements
 1. The app is an extension of Dean Attali's pre-existing app. It can be found [here](https://deanattali.com/blog/building-shiny-apps-tutorial/).
