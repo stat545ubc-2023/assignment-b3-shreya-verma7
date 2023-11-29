@@ -17,9 +17,16 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
                 tabPanel("Plots",
 
 
-                         titlePanel(title = "Data Exploration: Visual"),
+                         titlePanel(title = "Exploration: Visual"),
                          h4("Let's conduct basic EDA on the BC liquor store dataset!"),
                          h4("Data filters:"),
+
+                         sidebarLayout(
+                           sidebarPanel(
+                             img(src="pic.png", height="265px", width="400px", alt="error with image", deleteFile=FALSE)
+                           ),
+
+                           # Key Feature 5: Displaying an image of BC Liquor Store to increase app's visual appeal for enhanced user experience
 
                          sidebarLayout(
                            sidebarPanel(
@@ -42,20 +49,25 @@ ui <-navbarPage("BC Liquor Store Data", theme = shinytheme("cosmo"),
                                tabPanel("Frequency Distribution of Alcohol Content", plotOutput("alcohol_hist")),
                                tabPanel("Frequency Distribution of Sweetness", plotOutput("sweetness_hist")))
                            )
-                         )),
+                         ))),
 
                 tabPanel("Table",
-                         titlePanel(title = "Data Exploration: Tabular"),
+                         titlePanel(title = "Exploration: Tabular"),
                          h4("Table delineates filtered information per user selections"),
                          h4("Table is interactive for further sorting and filtering"),
 
+                         sidebarLayout(
+                           sidebarPanel(
+                             img(src="pic.png", height="265px", width="400px", alt="error with image", deleteFile=FALSE)
+                           ),
 
-                           mainPanel(
-                             # Using package DT, rendering table output
-                             DT::dataTableOutput("data_table")
-                           )
 
-                         ),
+                         mainPanel(
+                           # Using package DT, rendering table output
+                           DT::dataTableOutput("data_table")
+                         )
+
+                )),
 
                 tabPanel("Data",
                          # Including the data download button
@@ -73,9 +85,9 @@ server <- function(input, output) {
 
   # Feature : Making the dataset reactive to user inputs i.e. filters
   filtered_data <- reactive({ bcl %>% filter(Price > input$priceInput[1] &
-                       Price < input$priceInput[2] &
-                       Type == input$typeInput)
-     })
+                                               Price < input$priceInput[2] &
+                                               Type == input$typeInput)
+  })
 
 
   # Displaying histogram for 'alcohol_content' attribute
@@ -110,12 +122,23 @@ server <- function(input, output) {
       paste("No of products found per above selection ", tempCount)
     })
 
-  # Adding Feature 4: changing data rendering for table to enable interactivity(Exploring options for Assignment 4)
+  # Adding Key Feature 4: changing data rendering for table to enable interactivity(Exploring options for Assignment 4)
   output$data_table <-
     DT::renderDataTable({
       filtered_data()
     })
+
+  # Adding Key Feature 6: Downloading filtered data
+  output$downloadData <- downloadHandler(
+    filename = function(){
+      paste("BC-Liquor-Dataset", ".csv", sep="")
+    },
+    content = function(file){
+      write.csv(filtered_data(), file)
+    }
+  )
 }
+
 
 # Run the application
 shinyApp(ui = ui, server = server)
